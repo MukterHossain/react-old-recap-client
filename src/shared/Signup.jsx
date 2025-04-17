@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../provider/auth-context";
 
 
 const Signup = () => {
-    const handleSignup =(e) =>{
+  const {createUser, loading} = useContext(AuthContext)
+    const handleSignup = async(e) =>{
         e.preventDefault()
         const form = e.target
         const name = form.name.value;
@@ -13,6 +16,12 @@ const Signup = () => {
             name, email, photo, password, 
         }
         console.log(newUser)
+        try {
+          const result = createUser(email, password)
+          alert('register successfully')
+        } catch (error) {
+          console.log(error)
+        }
     }
     return (
         <div className='flex justify-center items-center min-h-[calc(100vh-306px)]'>
