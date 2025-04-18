@@ -1,7 +1,29 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 
 const Login = () => {
+  const {loading, signIn} = useContext(AuthContext)
+  const navigate = useNavigate()
+  const handleSignIn = (e)=>{
+    e.preventDefault()
+    const form = e.target;
+    const email= form.email.value;
+    const password= form.password.value
+    try {
+      signIn(email, password)
+      .then(result=>{
+        const user = result.user
+        console.log(user)
+        alert('Signin successfully')
+        navigate('/')
+      })
+    } catch (error) {
+      console.log(error)
+      alert('Something was wrong')
+    }
+  }
     return (
         <div className='flex justify-center items-center min-h-[calc(100vh-306px)]'>
         <div className='flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg  lg:max-w-4xl '>
@@ -61,7 +83,7 @@ const Login = () => {
   
               <span className='w-1/5 border-b dark:border-gray-400 lg:w-1/4'></span>
             </div>
-            <form>
+            <form onSubmit={handleSignIn}>
               <div className='mt-4'>
                 <label
                   className='block mb-2 text-sm font-medium text-gray-600 '

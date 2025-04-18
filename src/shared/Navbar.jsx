@@ -1,16 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {  Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const Navbar = () => {
+  const {user, logOut,} = useContext(AuthContext)
+
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navLink = [
     { title: "Home", href: "/" },
-    { title: "Modals", href: "/" },
-    { title: "Forms", href: "/" },
-    { title: "Cards", href: "/" },
-    { title: "Dashboard", href: "/" },
+    { title: "Modals", href: "#" },
+    { title: "Forms", href: "##" },
+    { title: "Cards", href: "*" },
+    { title: "Dashboard", href: "**" },
   ];
+
+  console.log(user)
 
   return (
     <div className=" ">
@@ -42,14 +47,14 @@ const Navbar = () => {
             ))}
           </ul>          
           <div className="flex items-center gap-1">
-            <Link to={'/login'}>
+            {user ? <button onClick={logOut}>Logout</button> : <Link to={'/login'}>
             <button  className="font-semibold text-gray-900 duration-300 hover:text-blue-500">Login</button>
-            </Link>
+            </Link>}
             <button onClick={() => setDropdownOpen(!dropdownOpen)} className="relative duration-300">
                 <img className="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1613310023042-ad79320c00ff?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" alt="profile" />
                 {dropdownOpen && <ul className="bg-amber-300 absolute top-12 duration-300 right-0 px-4 rounded-md">
-                    <li><NavLink>Profile</NavLink></li>
-                    <li><NavLink>Logout</NavLink></li>
+                    <li><NavLink to="/profile">Profile</NavLink></li>
+                    {user && <li><NavLink>Logout</NavLink></li>}
                 </ul>
                 }
             </button>
